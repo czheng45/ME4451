@@ -1,48 +1,57 @@
 classdef PriorityQueue < handle
 	properties
-		heap int32
+		constructor
+		heap
 		hsize int32
-		temp int32
-		swip int8
+		swip logical
+		temp
 	end
 
 	methods
-		function PriorityQueue = PriorityQueue(imsize) 
-			PriorityQueue.heap = zeros([imsize(1)*imsize(2),3]);
+		function PriorityQueue = PriorityQueue(constructor,imsize) 
+			if ~strcmpi(class(constructor),'function_handle')
+				error(['Needs a class constructor with default vals to initialize!',
+					   'That being said	a class constructor is a function handle so',
+					   'technically you just need a function handle. But it is undefined',
+					   'behavior if you use a random function handle']);
+			end
+			PriorityQueue.constructor = constructor;
+			PriorityQueue.heap = constructor();
+			PriorityQueue.heap(imsize(1)*imsize(2)) = constructor();
 			PriorityQueue.hsize = 0;
-			temp = zeros([1,3]);
-			swip = 1;
+			swip = 0;
 		end
 
-		function success = enqueue(pq, data)
-			%data must be a 1x3 vector with the elements: [pathlength,r,c]
-			if pq.hsize+1 > length(pq.heap)
-				pq.heap = [pq.heap;zeros(size(pq.heap))];
+		function [] = enqueue(pq, dat)
+			%data must be of the same type as initialized in the constructor
+
+			if (pq.hsize+1) > length(pq.heap)
+				pq.heap(2*length(pq.heap)) = pq.constructor(); %double heap size if array exceeded
 			end
-			if pq.hsize == 0
-				pq.heap(1,:) = data;
-				pq.hsize = pq.hsize+1;
-			else
-				pq.hsize = pq.hsize+1;
-				pq.heap(pq.hsize,:) = data;
-				pq.upheap();
-			end
+			pq.hsize = pq.hsize + 1;
+			pq.heap(pq.hsize) = dat;
+			pq.upheap();
 		end
 
 		function node = dequeue(pq)
 			if pq.hsize == 0
 				error('Queue is empty');
 			end
-			node = pq.heap(1,:);
-			pq.heap(1,:) = pq.heap(pq.hsize,:);
-			pq.heap(pq.hsize,:) = [0,0,0];
+			node = pq.heap(1);
+			pq.heap(1) = pq.heap(pq.hsize);
+			pq.heap(pq.hsize) = pq.constructor();
 			pq.hsize = pq.hsize - 1;
 			pq.downheap();
 		end
 
 		function [] = clear(pq)
-			pq.hsize = 0;
-			pq.heap = zeros([length(pq.heap),3]);
+			if (pq.hsize > 0) 
+				pq.temp = pq.constructor();
+				pq.heap = pq.constructor();
+				pq.heap(pq.hsize) = pq.constructor();
+				pq.hsize = 0;
+			end
+			
 		end
 
 		function qsize = queueSize(pq)
@@ -57,7 +66,7 @@ classdef PriorityQueue < handle
 			idx = pq.hsize;
 			parentnode = idivide(idx, 2, 'floor');
 			while(true)
-				if parentnode >= 1 && (pq.heap(idx,1) < pq.heap(parentnode,1))
+				if (parentnode >= 1) && (pq.heap(idx).compareTo(pq.heap(parentnode)) < 0)
 					pq.swap(idx,parentnode);
 					idx = parentnode;
 					parentnode = idivide(idx, 2, 'floor');
@@ -77,16 +86,16 @@ classdef PriorityQueue < handle
 				end
 
 				if child2 > pq.hsize
-					if pq.heap(idx,1) > pq.heap(child1,1)
+					if pq.heap(idx).compareTo(pq.heap(child1)) > 0
 						pq.swap(idx,child1);
 					end
 					return;
 				end
 
-				if pq.heap(idx,1) > pq.heap(child1,1) || pq.heap(idx,1) > pq.heap(child2,1)
-					if pq.heap(child1,1) == pq.heap(child2,1)
+				if pq.heap(idx).compareTo(pq.heap(child1)) > 0 || pq.heap(idx).compareTo(pq.heap(child2)) > 0
+					if pq.heap(child1).compareTo(pq.heap(child2)) == 0
 						if pq.swip == 1
-							pq.swip = 2;
+							pq.swip = 0;
 							pq.swap(idx,child1);
 							idx = child1;
 						else
@@ -94,12 +103,15 @@ classdef PriorityQueue < handle
 							pq.swap(idx,child2);
 							idx = child2;
 						end
-					elseif pq.heap(child1,1) > pq.heap(child2,1)
+
+					elseif pq.heap(child1).compareTo(pq.heap(child2)) > 0
 						pq.swap(idx,child2);
 						idx = child2;
+
 					else
 						pq.swap(idx,child1);
 						idx = child1;
+
 					end
 
 				else
@@ -110,9 +122,9 @@ classdef PriorityQueue < handle
 		end
 
 		function [] = swap(pq,a,b)
-			pq.temp = pq.heap(a,:);
-			pq.heap(a,:) = pq.heap(b,:);
-			pq.heap(b,:) = pq.temp;
+			pq.temp = pq.heap(a);
+			pq.heap(a) = pq.heap(b);
+			pq.heap(b) = pq.temp;
 		end
 
 	end

@@ -18,9 +18,9 @@ end
 if binim(e(1),e(2)) == false
    error('End out of bounds');
 end
-tic
+%tic
 hello = dijkstraImage(binim,s);
-toc
-tic
-showDijkstra(binim,hello,e);
-toc
+%toc
+%tic
+%showDijkstra(binim,hello,e);
+%toc
