@@ -22,25 +22,37 @@ Ibw = imcomplement(Ibw);
 
 %Use Ibw as matrix input
 map = robotics.BinaryOccupancyGrid(Ibw);
-figure(1)
-show(map)
+%figure(1)
+%show(map)
 
 %Inflate objects
 inflate(map,expand)
-figure(2)
-show(map)
+%figure(2)
+%show(map)
 
 %Find stop location(red)
 red = I(:,:,1)>200 & I(:,:,2)==0 & I(:,:,3)==0;
 rcoord = regionprops(red,'Centroid');
-stop = [rcoord.Centroid(1) rcoord.Centroid(2)];
+if isempty(rcoord)
+   warning('An ending coordinate could not be found'); 
+   stop = [];
+else
+   stop = [rcoord.Centroid(1) rcoord.Centroid(2)];
+end
+
 
 %Find start location(green)
 green = I(:,:,1)>140 & I(:,:,2)>180 & I(:,:,3)<100;
 gcoord = regionprops(green,'Centroid');
-start = [gcoord.Centroid(1) gcoord.Centroid(2)];
+if isempty(rcoord)
+   warning('A starting coordinate could not be found');
+   start = [];
+else
+   start = [gcoord.Centroid(1) gcoord.Centroid(2)];
+end
 
-out = Ibw;
+
+out = ~(occupancyMatrix(map));
 
 
 
