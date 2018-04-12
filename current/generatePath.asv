@@ -1,0 +1,12 @@
+clear;
+clc;
+
+load('dijdatatest');
+parentpt = [450,359];
+path = [];
+iter = 1;
+while(parentpt(1) != 0) 
+    path(i,:) = parent;
+    parentpt = returnmap(parent
+    
+end

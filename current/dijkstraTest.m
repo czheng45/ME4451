@@ -21,6 +21,6 @@ end
 tic
 hello = dijkstraImage(binim,s);
 toc
-tic
-showDijkstra(binim,hello,e);
-toc
+%tic
+%showDijkstra(binim,hello,e);
+%toc
