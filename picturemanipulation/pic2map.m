@@ -1,22 +1,41 @@
+function [out, start, stop, angle] = pic2map(expand)
 %takeimage
-clear
+
 %Setting up camera settings
 cam = webcam(2);
 cam.Resolution = '1280x720';
 cam.Brightness = 100;
+cam.Sharpness = 50;
 cam.Contrast = 1;
 cam.Exposure = -8;
 cam.FocusMode = 'Auto';
 
-%Take pictur
-
+%Take picture
+preview(cam);
+pause;
 pic = snapshot(cam);
 figure(1)
 image(pic)
 %%
 % Convert RGB image to chosen color space
 I = rgb2hsv(pic);
+%%
+imshow(pic)
+Igray = rgb2gray(pic);
+figure(5)
+image(Igray)
 
+Ibw = imbinarize(Igray);
+figure(6)
+image(Ibw)
+
+map = robotics.BinaryOccupancyGrid(Ibw);
+figure(7)
+show(map)
+
+inflate(map,expand)
+figure(8)
+show(map)
 %% Red
 %Creates a mask for red values
 
@@ -43,7 +62,7 @@ maskedRGBImage = pic;
 
 % Set background pixels where BW is false to zero.
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-figure(1)
+figure(2)
 image(maskedRGBImage)
 redcoord = regionprops(sliderRed,'Centroid','Area');
 %% Find Largest Red location
@@ -83,7 +102,7 @@ maskedRGBImage = pic;
 
 % Set background pixels where BW is false to zero.
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-figure(2)
+figure(3)
 image(maskedRGBImage)
 greencoord = regionprops(sliderGreen,'Centroid','Area');
 %% Find Largest Green location
@@ -123,41 +142,25 @@ maskedRGBImage = pic;
 
 % Set background pixels where BW is false to zero.
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-figure(3)
+figure(4)
 image(maskedRGBImage)
 blackcoord = regionprops(sliderBlack,'Centroid','Area');
-%%
-imshow(pic)
-Igray = rgb2gray(pic);
-figure(4)
-image(Igray)
 
-Ibw = imbinarize(Igray,.45);
-figure(5)
-image(Ibw)
-
-map = robotics.BinaryOccupancyGrid(Ibw);
-figure(2)
-show(map)
-
-inflate(map,10)
-figure(3)
-show(map)
 
 
 %% Expand Black objects
-
-%Ibw = imcomplement(BW); %Want objects to be "white"
-Igray = rgb2gray(maskedRGBImage);
-Ibw = imbinarize(Igray,.45);
-%Use Ibw as matrix input
-map = robotics.BinaryOccupancyGrid(BW);
-figure(1)
-show(map)
-
-inflate(map,10)
-figure(2)
-show(map)
+% 
+% %Ibw = imcomplement(BW); %Want objects to be "white"
+% Igray = rgb2gray(maskedRGBImage);
+% Ibw = imbinarize(Igray,.45);
+% %Use Ibw as matrix input
+% map = robotics.BinaryOccupancyGrid(BW);
+% figure(1)
+% show(map)
+% 
+% inflate(map,expand)
+% figure(2)
+% show(map)
 
 out = ~(occupancyMatrix(map));
 %% Blue
@@ -186,7 +189,7 @@ maskedRGBImage = pic;
 
 % Set background pixels where BW is false to zero.
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-figure(4)
+figure(9)
 imshow(maskedRGBImage)
 bluecoord = regionprops(sliderBlue,'Centroid','Area');
 
@@ -202,3 +205,5 @@ one = bluecoord(top2coord(1)).Centroid;                                     %Had
 two = bluecoord(top2coord(2)).Centroid;
 angleRad = atan((two(1)-one(1))/(two(2)-one(2)));                        %Need to test with real examples
 angle = rad2deg(angleRad);
+
+end
