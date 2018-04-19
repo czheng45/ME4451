@@ -20,8 +20,8 @@ function [adjim] = filterRobotSnapshot(image)
 %	imadjust
 %
 %------------------------------------------------------------------------------
-adjim = wiener3(image);
-adjim = adjim - getBGDmap(adjim);
+
+adjim = image - getBGDmap(image);
 adjim = imadjust(adjim,[0.4,0.4,0.4;1,1,1]);
 
 end
