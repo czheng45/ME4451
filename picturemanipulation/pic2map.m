@@ -1,6 +1,5 @@
 function [out, start, stop, angle] = pic2map(expand)
 %takeimage
-
 %Setting up camera settings
 cam = webcam(2);
 cam.Resolution = '1280x720';
@@ -164,19 +163,17 @@ blackcoord = regionprops(sliderBlack,'Centroid','Area');
 
 out = ~(occupancyMatrix(map));
 %% Blue
-%Creates a mask for green values
-
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.493;
-channel1Max = 0.774;
+channel1Min = 0.554;
+channel1Max = 0.713;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min = 0.602;
+channel2Min = 0.708;
 channel2Max = 1.000;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min = 0.416;
-channel3Max = 0.720;
+channel3Min = 0.687;
+channel3Max = 1.000;
 
 % Create mask based on chosen histogram thresholds
 sliderBlue = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
@@ -189,6 +186,7 @@ maskedRGBImage = pic;
 
 % Set background pixels where BW is false to zero.
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
+
 figure(9)
 imshow(maskedRGBImage)
 bluecoord = regionprops(sliderBlue,'Centroid','Area');
