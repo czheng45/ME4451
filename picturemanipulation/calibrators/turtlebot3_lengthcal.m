@@ -1,4 +1,4 @@
-function [cmperpix] = turtlebot3_lengthcal(rawim,varargin)
+function [cmperpix] = turtlebot3_lengthcal(filterim,varargin)
 %----------------------------turtlebot3_lengthcal------------------------------
 %DESCRIPTION
 %   Returns a conversion factor of cm/pix, converting pixels to real-world
@@ -7,8 +7,9 @@ function [cmperpix] = turtlebot3_lengthcal(rawim,varargin)
 %
 %
 %INPUT ARGUMENTS
-%	rawim:
-%		raw image taken from webcam that has a clear view of the turtlebot3.
+%	filterim:
+%		filtered image taken from webcam that has a clear view of the
+%       turtlebot3. The filter that should be used is filterRobotSnapshot
 %
 %   varargin:
 %       'show' - shows all plots of image masks from each subfunction
@@ -34,20 +35,13 @@ if length(varargin) > 0
     end
 end
 
-%filter the image such that the robot's calibration spots are ephasized
-filterim = filterRobotSnapshot(rawim);
-if opts.show
-    figure
-    imshow(filterim);
-end
-
 %pink and blue calibrationspots get
 calspots{1} = getCalibrationSpots(filterim,@calibratorMaskBlue,varargin);
 calspots{2} = getCalibrationSpots(filterim,@calibratorMaskPink,varargin);
 
 d_sets = zeros([1,length(calspots)]);
-for q = 1:length(calspots)
 
+for q = 1:length(calspots)
 	%ideally, there are only two such objects per calspot set.
 	%If there are more or less, then something might be wrong with our mask.
 	%Issue a warning.

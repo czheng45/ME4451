@@ -6,7 +6,9 @@ function [calspots] = getCalibrationSpots(filterim,calibrationmask,varargin)
 %   the calibration spots desired (std colors should be blue, hot pink, orange)
 %   and returns their Centroid and Area (as in regionprops).
 %
-%   Attempts to remove any spots that aren't circular or are not large enough %   to be circles.
+%   Attempts to remove any spots that aren't circular or are not large enough
+%   to be circles. Warns the user if there are the wrong number of spots
+%   detected
 %
 %INPUT ARGUMENTS
 %   im:
@@ -34,7 +36,6 @@ function [calspots] = getCalibrationSpots(filterim,calibrationmask,varargin)
 %FUNCTION CALLS 
 %   isCircle
 %   sizeCutoff
-%   filterRobotSnapshot
 %   calibrationmask
 %   regionprops
 %
@@ -60,6 +61,18 @@ calspots = sizeCutoff(calspots);
 
 %get rid of non-circles
 calspots = isCircle(calspots);
+
+if strcmp(func2str(calibrationmask),'calibratorMaskOrange')
+    limit = 1;
+else
+    limit = 2;
+end
+
+if length(calspots) > limit
+    warning('Too many calibration spots detected');
+elseif length(calspots) < limit
+    warning('Too few calibration spots detected');
+end
 
 if opts.show %optional plot of the obtained calibration spots
     figure
