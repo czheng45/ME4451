@@ -36,7 +36,6 @@ end
 
 grey_image = rgb2gray(color_image);
 background_map = imopen(grey_image,strel('disk',area,4));
-background_map = repmat(background_map,[1,1,3]);
 
 end
 
