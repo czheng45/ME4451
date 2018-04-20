@@ -12,4 +12,4 @@ imshow(adjim)
 
 [blueangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskBlue,'show'));
 
-[pinkangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskPink,'show'));
+%[pinkangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskPink,'show'));
