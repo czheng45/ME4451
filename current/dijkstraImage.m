@@ -1,4 +1,5 @@
-function parents = dijkstraImage(binim,s)
+function [djmap] = dijkstraImage(binim,s)
+    djmap.start = s;
 	nodes = BinaryWrapper(binim);
 	touched = BinaryWrapper(binim);
 	parents = ArrayWrapper(zeros([size(binim),2],'int32'));
@@ -29,5 +30,8 @@ function parents = dijkstraImage(binim,s)
 			touched.setData(s(2),s(3) - 1,false);
 			parents.setData(s(2),s(3) - 1,[s(2),s(3)]);
 		end
-	end
+    end
+    
+    djmap.map = parents.data;
+    
 end

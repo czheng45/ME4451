@@ -1,8 +1,8 @@
-close all;
-clear;
-clc;
+%close all;
+%clear;
+%clc;
 
-addpath(genpath(cd));
+%addpath(genpath(cd));
 
 %{
 cam = webcam(1);
@@ -15,11 +15,14 @@ preview(cam);
 pause;
 %}
 
-load('testim1.mat');
+%load('testim1.mat');
 
-tic
+%tic
 %testim = snapshot(cam);
-turtlebot3_lengthcal(testim,'show');
+%turtlebot3_lengthcal(testim,'show');
 %turtlebot3_lengthcal(testim);
-toc
+%toc
+
+getCalibrationSpots(filtim,@calibratorMaskPink);
+
 
