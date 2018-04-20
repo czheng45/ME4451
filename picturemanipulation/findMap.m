@@ -1,6 +1,6 @@
 function [expandedbinary,goodmap] = findMap(pic, lengthcalibrationfactor)
 
-
+robotbound = 16.6;
 %find robot's blue dot
 % [adjim] = filterRobotSnapshot(pic);
 % [calspots] = getCalibrationSpots(adjim,@calibratorMaskBlue);
@@ -22,13 +22,15 @@ function [expandedbinary,goodmap] = findMap(pic, lengthcalibrationfactor)
 orangelocation = calspots(1).Centroid;
 x = round(orangelocation(1));
 y = round(orangelocation(2));
-imshow(goodmap)
+%imshow(goodmap)
 %make everything around it zeros
-for i = x-83:x+83
-    for j = y-83:y+83
+for i = x-50:x+50
+    for j = y-50:y+50
         goodmap(j,i) = 0;
     end
 end
-[expandedbinary] = boundExpand(goodmap,lengthcalibrationfactor);
-imshow(goodmap)
+[expandedbinary] = boundExpand(goodmap,robotbound/2/lengthcalibrationfactor);
+%imshow(goodmap)
+
+%imshow(expandedbinary)
 end

@@ -8,8 +8,9 @@
 [stop] = findstop(pic);
 
 [adjim] = filterRobotSnapshot(pic);
-imshow(adjim)
 
-[blueangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskBlue,'show'));
+[blueangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskBlue));
 
-%[pinkangle] = findangle(getCalibrationSpots(adjim,@calibratorMaskPink,'show'));
+[expandedbinary,goodmap] = findMap(pic, .2); %Should be .1
+figure
+imshow(expandedbinary);
