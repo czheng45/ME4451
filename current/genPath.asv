@@ -1,0 +1,7 @@
+function [path] = genPath(djmap,endpt)
+
+   
+
+
+end
+
