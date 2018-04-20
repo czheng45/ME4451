@@ -1,23 +1,22 @@
 function [path] = BFSSelectPath(map, image, start, lengthcal)
+bounds = bwboundaries(map);
 
 figure
 imshow(image);
-bounds = bwboundaries(map);
 hold on
 for q = 1:length(bounds)
-    plot(bounds{1}(:,2
+    plot(bounds{q}(:,2),bounds{q}(:,1),'r');
 end
 
+BFSmap = BFSImage(map,start); %get the 
 
-start = ginput(1);
-start = start(end:-1:1);
-
-djmap = BFSImage(map,start);
 hold on
 plot(start(2),start(1),'rx');
 title('Select an ending destination');
+
 endpt = ginput(1);
 endpt = round(endpt(end:-1:1));
+
 path = genPath(djmap,endpt);
 
 for q = 1:size(path.path,1) - 1
@@ -25,6 +24,7 @@ for q = 1:size(path.path,1) - 1
          [path.path(q,1),path.path(q+1,1)],...
          '--g');
 end
+
 plot(path.path(end,2),path.path(end,1),'rx');
 
 path.raw = path.path;

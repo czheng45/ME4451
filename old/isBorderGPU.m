@@ -1,9 +1,0 @@
-function [isborder] = isBorderGPU(pix,up,down,left,right)
-
-	isborder = (pix && ~up) ||...
-	           (pix && ~down) ||...
-	           (pix && ~left) ||...
-	           (pix && ~right);
-
-end
-
