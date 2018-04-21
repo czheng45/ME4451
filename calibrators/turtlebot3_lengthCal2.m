@@ -69,7 +69,7 @@ end
 
 avgl = nanmean(ratios);
 diffs = abs((ratios./avgl) - 1);
-if any(diffs > 0.02)
+if any(diffs > 0.025)
    warning('The ratios of all your calibration lengths are too far apart. Is the camera at a poor angle?'); 
 end
 
