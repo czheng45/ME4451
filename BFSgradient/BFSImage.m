@@ -5,7 +5,7 @@ function [gradmap] = BFSImage(binim,s)
     gradmap.end = s;
 	nodes = BinaryWrapper(binim);
 	touched = BinaryWrapper(binim);
-	pathlength = ArrayWrapper(zeros([size(binim),1],'int32'));
+	pathlength = ArrayWrapper(0*ones([size(binim),1],'int32'));
 	nextPath = Queue(size(binim));
 
 	s = int32([s,0]);
