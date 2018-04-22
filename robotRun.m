@@ -3,7 +3,7 @@ close all;
 clc;
 addpath(genpath(cd));
 
-testmode = 1;
+testmode = 0;
 testfile = 'maze2.mat';
 
 %% Webcam Bringup--------------------------------------------------------------
@@ -12,7 +12,7 @@ if(~testmode)
 cam = webcam(2);
 cam.Resolution = '1280x720';
 preview(cam);
-pause(3);
+pause(4);
 end
 
 %% Zero angle

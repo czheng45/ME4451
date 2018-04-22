@@ -1,7 +1,7 @@
 function [expandedbinary,goodmap] = findMap(pic, lengthcalibrationfactor)
 
 safety = 1.25;
-robotbound = 21.0;
+robotbound = 15;
 %find robot's blue dot
 % [adjim] = filterRobotSnapshot(pic);
 % [calspots] = getCalibrationSpots(adjim,@calibratorMaskBlue);
