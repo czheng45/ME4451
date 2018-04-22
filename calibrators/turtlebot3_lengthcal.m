@@ -67,7 +67,7 @@ end
 
 d_sets(isnan(d_sets)) = []; %remove nans
 
-if any(abs((d_sets./mean(d_sets)) - 1) > 0.02) %calculation from different spots is too different
+if any(abs((d_sets./mean(d_sets)) - 1) > 0.025) %calculation from different spots is too different
 	warning('Too much variance in distance scalings calculated. Is the image at an angle or improperly oriented?');
 	cmperpix = NaN;
 	return;

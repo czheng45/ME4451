@@ -1,8 +1,5 @@
-function [centercoord] = turtlebot3_center(cam)
+function [centercoord] = turtlebot3_center(im)
 %Get the turning center of the turtlebot, which is the big blue circle
-
-im = snapshot(cam);
-im = filterRobotSnapshot(im);
 
 bodies = getCalibrationSpots(im,@calibratorMaskBlue);
 spotsizes = [bodies.Area];
