@@ -1,0 +1,13 @@
+clear all;
+
+openfig('maze2.fig');
+load('BFS.mat');
+
+visited = zeros([720,1280],'logical');
+for r = 1:720
+    for c = 1:1280
+           plot([path.path(q,2),path.path(q+1,2)],...
+         [path.path(q,1),path.path(q+1,1)],...
+         '--g');
+    end
+end
