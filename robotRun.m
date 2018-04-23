@@ -4,7 +4,7 @@ clc;
 addpath(genpath(cd));
 
 testmode = 1;
-testfile = 'maze2.mat';
+testfile = 'maze5.mat';
 
 %% Webcam Bringup--------------------------------------------------------------
 if(~testmode)

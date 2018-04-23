@@ -79,12 +79,9 @@ if opts.show %optional plot of the obtained calibration spots
     imshow(maskimg); %double check
     hold on;
     for i = 1:length(calspots) %plot each centroid
-        plot(calspots(i).Centroid(1),calspots(i).Centroid(2),'ro')
+        plot(calspots(i).Centroid(1),calspots(i).Centroid(2),'rx')
     end
-    plot([calspots(1).Centroid(1),calspots(2).Centroid(1)],...
-         [calspots(1).Centroid(2),calspots(2).Centroid(2)],...
-         '-r');
-        
+    plot([calspots(1).Centroid(1),calspots(1).Centroid(1)
 end
 
 
